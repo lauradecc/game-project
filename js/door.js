@@ -1,11 +1,12 @@
 class Door {
-    constructor(ctx, x, y, width, height){ //canvasSize????
+    constructor(ctx, index, width, height){ //canvasSize????
         this.ctx = ctx;
-        this.x = x;
-        this.y = y;
+        this.i = index;
+        this.x = (this.i % 50) * 20;
+        this.y = Math.floor(this.i / 50) * 20; 
         this.width = width;
         this.height = height;
-        // Width y height y posición predefinida o con parametros para otros mapas??
+        // Width y height depende de los números en el array o de tamaño, imagen o what??
     }
 
     draw() {
@@ -13,22 +14,22 @@ class Door {
         this.ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 
+    // Esto aquí o en game?? Si lo movemos a game, mirar bien 'this', etc.
     // When player touches door, key appears
-    // Si ponemos puerta en otra posición, añadir condición que falta " && player.height + player.y > this.y"
-    playerCollision() {
-        if (player.x < this.x + this.width &&
-            player.x + player.width > this.x &&
-            player.y < this.y + this.height) {
-                if (player.hasKey === false) {
-                    key.visibility = true;
-                    player.hasTouchedDoor = true;
-                } else {
-                    // Esto debe llevar al siguiente nivel
-                    alert ("YOU WIN!");
-                }
+    // game.player? player como parámetro?
+    // el número -50 es para la posición de ahora, pero para la puerta en la posición final debe ser +1
+    // si queremos que aparezca la llave al tocar la puerta por los lados, también + 50 -50, diagonal?
+    checkPlayerCollision() {
+        if (game.player.i - 50 === this.i) {
+            if (game.player.hasKey === false) {
+                game.map[102] = 6;
+                game.player.hasTouchedDoor = true;
+            } else {
+                // Esto debe llevar al siguiente nivel
+                // Revisar
+                game.player.i = game.player.initialIndex;
+                alert ("YOU WIN!");
+            }
         }
     }
-
-
-
 }

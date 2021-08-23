@@ -4,25 +4,30 @@ const game = {
     canvasSize: {h: null, w: null},
     background: null,
     timeInterval: 20,
+    squareSize: 20,
+    verticalGhostsArr: [],
+    horizontalGhostsArr: [],
+    allGhostsArr: [],
+     
     map: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+           0,1,1,1,1,1,1,1,1,1,1,5,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,3,1,1,1,1,1,1,1,1,1,1,3,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-           0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-           0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
+           0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,4,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,0,
            0,1,1,1,1,0,0,0,0,0,0,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,
            0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,0,
-           0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,0,
+           0,1,1,1,1,0,1,1,2,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,0,0,0,0,
+           0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,3,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,
-           0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,
-           0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,
+           0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,4,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,
            0,0,0,0,0,0,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,1,1,1,0,
-           0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
+           0,1,1,1,3,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
@@ -35,32 +40,16 @@ const game = {
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
    
-    
-    /*
-    // Map arrays
-    borderTop: [],
-    borderBottom: [],
-    borderLeft: [],
-    borderRight: [],
-    verticalBars: [],
-    map: [],
-    // Ghost array
-    ghostsArray: [],
-    
-    // Meter obstáculos, personaje, balas, whatever
-    // keys: {}
-    */
+
     init(id) {
         this.canvas = document.getElementById(id);
         this.ctx = this.canvas.getContext('2d');
         //// Medidias fijas o en función de la pantalla?
         this.canvasSize = {h: 600, w: 1000};
-        //this.createMap()
-        //this.concatMap()
-        ////console.log(this.map)
         this.drawMap()
         this.createAll()
-        //player.setListener()
+        this.player.setListener()
+        this.concatGhosts()
         this.start();
     },
 
@@ -69,25 +58,21 @@ const game = {
             this.clearAll()
             this.drawMap()
             this.drawAll()
-            //this.moveAll()
+            this.moveAll()
+            this.checkAllCollisions()
             // this.drawText()
-            // player.checkGhostsCollisions()
-            // door.playerCollision()
-            // key.playerCollision()
-            // this.createShowKey()
         }, this.timeInterval);
     },
 
     drawMap() {
-        let squareSize = 20;
         for (let i = 0; i < this.map.length; i++) {
             const cell = this.map[i]
-            const posX = (i % 50) * squareSize
-            const posY = Math.floor(i / 50) * squareSize
+            const posX = (i % 50) * this.squareSize
+            const posY = Math.floor(i / 50) * this.squareSize
             
      
             this.ctx.fillStyle = this.map[i] === 1 ? '#FFF' : '#000';
-            this.ctx.fillRect(posX, posY, squareSize, squareSize);
+            this.ctx.fillRect(posX, posY, this.squareSize, this.squareSize);
         }
     },
 
@@ -102,108 +87,88 @@ const game = {
         this.ctx.clearRect(0, 0, this.canvasSize.w, this.canvasSize.h)
     },
 
+    // Posición inicial calculada manualmente a partir del index del array donde queremos que empiece (458)
     createPlayer() {
-        this.player = new Player(this.ctx, 160, 180, 20, 20)
+        this.player = new Player(this.ctx, this.map.indexOf(2), 20, 20)
     },
 
     createAll() {
         this.createPlayer();
-        // ghost1 = new Ghost(this.ctx, 50, 470, 20, 20)
-        // ghost2 = new Ghost(this.ctx, 920, 300, 20, 20)
-        // this.ghostsArray.push(ghost1, ghost2)
-        // door = new Door(this.ctx, 850, 50, 50, 10)
-        // key = new Key(this.ctx, 720, 60, 5, 15)
+        this.map.forEach((number, index) => {
+            if (number === 3) {
+                this.verticalGhostsArr.push(new Ghost(this.ctx, index, 'vertical', 50, 20, 20));
+            }
+            if (number === 4) {
+                this.horizontalGhostsArr.push(new Ghost(this.ctx, index, 'horizontal', 1, 20, 20));
+            }
+            if (number === 5) {
+                this.door = new Door(this.ctx, index, 20, 20)
+            }
+            // No podemos crear aquí la llave porque llamamos a esta función en init y la llave aún no existe (el 6)
+            // if (number === 6) {
+            //     this.key = new Key(this.ctx, index, 10, 5)
+            // }
+        });
     },
+
+    createDrawKey() {
+        this.map.forEach((number, index) =>{
+            if (number === 6) {
+                this.key = new Key(this.ctx, index, 20, 20);
+                this.key.draw();
+                this.key.checkPlayerCollision()
+                this.key.playerTakesKey()
+            }
+        });
+    }, 
 
     drawAll() {
         this.player.draw();
-        // ghost1.draw()
-        // ghost2.draw()
-        // door.draw()
-        // key.show()
-    },
-    /*
-    moveAll() {
-        ghost1.move()
-        ghost2.move()
-        ghost1.checkCollision()
-        ghost2.checkCollision()
-    },
-    */
-    /*
-    createMap() {
-        //Todas estas funciones se pueden meter en 
-        //la clase cuadrado o reducirlo de alguna manera fuera
-        //de game???
-        this.createBordersTopBottom(20, 550, 50)
-        this.createBordersLeftRight(10, 950, 50)
-        this.createInteriorMap()
-    },
-
-    drawMap() {
-        this.drawBordersTopBottom()
-        this.drawBordersLeftRight()
-        // Interior map:
-        this.drawVerticalBars()
-    },
-
-    createInteriorMap() {
-        this.createVerticalBars(8, 150, 50, 50)
-        this.createVerticalBars(8, 300, 150, 50)
-        this.createVerticalBars(8, 450, 50, 50)
-        this.createVerticalBars(8, 600, 150, 50)
-        this.createVerticalBars(8, 750, 50, 50)
-    },
-
-    // Join all squares in one array to iterate and create collisions
-    concatMap() {
-        this.map = this.map.concat(this.borderTop, this.borderBottom, 
-                   this.borderLeft, this.borderRight, this.verticalBars);
+        this.verticalGhostsArr.forEach(ghost => {
+            ghost.draw();
+        });
+        this.horizontalGhostsArr.forEach(ghost => {
+            ghost.draw();
+        });
+        this.door.draw();
+        this.createDrawKey();
     },
     
-    createBordersTopBottom(squaresNum, space, squareSize) {
-        //Se podría sustituir squareSize por el tamaño de la clase?
-        //por ejemplo no poniendola fija en la clase si no metiéndolo
-        //como parámetro y poniéndolo aquí creando variable en game
-        for (let i = 0; i < squaresNum; i++) {
-            this.borderTop.push(new Square(this.ctx, [i * squareSize], 0));
-            this.borderBottom.push(new Square(this.ctx, [i * squareSize], space));
-        }
+    moveAll() {
+        this.verticalGhostsArr.forEach(ghost => {
+            ghost.move();
+        });
+        this.horizontalGhostsArr.forEach(ghost => {
+            ghost.move();
+        });
     },
 
-    drawBordersTopBottom() {
-        for (let i = 0; i < this.borderTop.length; i++) {
-            this.borderTop[i].draw();
-            this.borderBottom[i].draw();
-        }
+    checkAllCollisions() {
+        this.verticalGhostsArr.forEach(ghost => {
+            ghost.checkCollision();
+        });
+        this.checkPlayerGhostCollisions()
+        this.door.checkPlayerCollision()
+        //if (this.map[102] === 6) this.key.checkPlayerCollision()
     },
 
-    createBordersLeftRight(squaresNum, space, squareSize) {
-        for (let i = 0; i < squaresNum; i++) {
-            this.borderLeft.push(new Square(this.ctx, 0, [(i + 1) * squareSize]));
-            this.borderRight.push(new Square(this.ctx, space, [(i + 1) * squareSize]));
-        }
+    concatGhosts() {
+        this.allGhostsArr = this.allGhostsArr.concat(this.verticalGhostsArr, this.horizontalGhostsArr);
     },
 
-    drawBordersLeftRight() {
-        for (let i = 0; i < this.borderLeft.length; i++) {
-            this.borderLeft[i].draw();
-            this. borderRight[i].draw();
-        }
-    },
-
-    createVerticalBars(squaresNum, x, y, squareSize) {
-        for (let i = 0; i < squaresNum; i++) {
-            this.verticalBars.push(new Square(this.ctx, x, y + squareSize * i));
-        }
-    },
-
-    drawVerticalBars() {
-        for (let i = 0; i < this.verticalBars.length; i++) {
-            this.verticalBars[i].draw();
-        }
-    },
-    */
+    checkPlayerGhostCollisions() {
+        this.allGhostsArr.forEach(ghost => {
+            if (this.player.i === ghost.i) {
+                this.player.i = this.player.initialIndex;
+                this.player.x = this.player.initialPosition.x;
+                this.player.y = this.player.initialPosition.y;
+                this.player.lives--;
+                if (this.player.lives === 0) {
+                    alert('GAME OVER');
+                    this.player.lives = 3;
+                }
+            }
+        });
+    }
 
 }
-
