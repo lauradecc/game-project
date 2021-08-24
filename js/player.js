@@ -48,6 +48,8 @@ class Player {
 
     draw() {
         this.ctx.fillStyle= "red"
+        this.x = (this.i % 50) * game.squareSize;
+        this.y = Math.floor(this.i / 50) * game.squareSize;
         this.ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 
@@ -72,15 +74,16 @@ class Player {
     }
 
     willBeCollision(desiredPositionIndex) {
-        return game.map[desiredPositionIndex] !== 1;
+        return !(game.map[desiredPositionIndex] === 1 
+                || game.map[desiredPositionIndex] === 6
+                || game.map[desiredPositionIndex] === 7);
+
     }
 
     updatePosition(desiredPositionIndex) {
         game.map[this.i] = 1;
-        game.map[desiredPositionIndex] = 2;
-        this.x = (desiredPositionIndex % 50) * game.squareSize;
-        this.y = Math.floor(desiredPositionIndex / 50) * game.squareSize;
         this.i = desiredPositionIndex;
+        game.map[desiredPositionIndex] = 2;
     }
 
     moveUp() {

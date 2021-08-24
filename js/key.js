@@ -13,20 +13,16 @@ class Key {
         this.ctx.fillStyle= "orange";
         this.ctx.fillRect(this.x, this.y, this.width, this.height);
     }
+    
+    checkPlayerCollision() {
+        return game.player.i === this.i
+    }
 
     // When player touches key, key disappears
-    checkPlayerCollision() {
-        if (game.player.i === 51 || game.player.i === 52 || game.player.i === 53 ||
-            game.player.i === 101 || game.player.i === 103 || game.player.i === 151 ||
-            game.player.i === 152 || game.player.i === 153) {
-                return true;
-            }
-    }
-    
     playerTakesKey() {
         if (game.player.hasTouchedDoor && this.checkPlayerCollision()) {
             game.player.hasKey = true;
-            game.map[102] = 1;
+            game.map[this.i] = 1;
         }
     }
 

@@ -12,6 +12,8 @@ class Ghost {
     }
 
     draw() {
+        this.x = (this.i % 50) * game.squareSize;
+        this.y = Math.floor((this.i) / 50) * game.squareSize;
         this.ctx.fillStyle= "blue"
         this.ctx.fillRect(this.x, this.y, this.width, this.height)
     }
@@ -43,8 +45,6 @@ class Ghost {
         game.map[this.i] = 1;
         game.map[this.i + this.speed] = number;
         this.i += this.speed; 
-        this.x = (this.i % 50) * game.squareSize;
-        this.y = Math.floor((this.i) / 50) * game.squareSize;
     }
 
 }

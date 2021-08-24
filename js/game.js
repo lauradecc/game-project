@@ -3,18 +3,21 @@ const game = {
     ctx: null,
     canvasSize: {h: null, w: null},
     background: null,
-    timeInterval: 20,
+    timeInterval: 30,
+    currentFrame: 0,
+    ghostTime: 4,
     squareSize: 20,
     verticalGhostsArr: [],
     horizontalGhostsArr: [],
     allGhostsArr: [],
-     
+    livesArr: [],
+
     map: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
            0,1,1,1,1,1,1,1,1,1,1,5,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,3,1,1,1,1,1,1,1,1,1,1,3,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-           0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,4,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,0,
+           0,1,1,1,1,1,1,1,1,1,1,1,7,1,1,0,4,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,0,
            0,1,1,1,1,0,0,0,0,0,0,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,
            0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,0,
@@ -23,13 +26,13 @@ const game = {
            0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,0,0,0,0,
            0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,3,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,
-           0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,
+           0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,7,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,4,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,
            0,0,0,0,0,0,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,1,1,1,0,
            0,1,1,1,3,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-           0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
+           0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,7,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,
@@ -39,7 +42,7 @@ const game = {
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-   
+
 
     init(id) {
         this.canvas = document.getElementById(id);
@@ -56,12 +59,13 @@ const game = {
     start() {
         setInterval(() => {
             this.clearAll()
+            this.updateObjects()
             this.drawMap()
             this.drawAll()
             this.moveAll()
             this.checkAllCollisions()
             // this.drawText()
-        }, this.timeInterval);
+        }, 1000/this.timeInterval);
     },
 
     drawMap() {
@@ -69,8 +73,6 @@ const game = {
             const cell = this.map[i]
             const posX = (i % 50) * this.squareSize
             const posY = Math.floor(i / 50) * this.squareSize
-            
-     
             this.ctx.fillStyle = this.map[i] === 1 ? '#FFF' : '#000';
             this.ctx.fillRect(posX, posY, this.squareSize, this.squareSize);
         }
@@ -104,22 +106,23 @@ const game = {
             if (number === 5) {
                 this.door = new Door(this.ctx, index, 20, 20)
             }
-            // No podemos crear aquí la llave porque llamamos a esta función en init y la llave aún no existe (el 6)
-            // if (number === 6) {
-            //     this.key = new Key(this.ctx, index, 10, 5)
-            // }
+            if (number === 7) {
+                this.livesArr.push(new Heart(this.ctx, index, 20, 20));
+            }
         });
     },
 
-    createDrawKey() {
-        this.map.forEach((number, index) =>{
-            if (number === 6) {
-                this.key = new Key(this.ctx, index, 20, 20);
-                this.key.draw();
-                this.key.checkPlayerCollision()
+    updateObjects() {
+        this.map.forEach((number, index) => {
+            if (number === 6 && this.key === undefined) {
+                this.key = new Key(this.ctx, index, 20, 20)
+            } else if (this.key) {
                 this.key.playerTakesKey()
-            }
+            } 
+   
         });
+
+        this.clearObjects()
     }, 
 
     drawAll() {
@@ -131,7 +134,9 @@ const game = {
             ghost.draw();
         });
         this.door.draw();
-        this.createDrawKey();
+        this.livesArr.forEach(heart => heart.draw());
+        // Teo, mejorable???
+        if (this.key !== undefined && this.player.hasKey === false) this.key.draw()
     },
     
     moveAll() {
@@ -143,12 +148,23 @@ const game = {
         });
     },
 
+    clearObjects() {
+        this.livesArr = this.livesArr.filter(heart => heart.toDelete === false)
+        // Meter clearKey.
+    },
+
     checkAllCollisions() {
         this.verticalGhostsArr.forEach(ghost => {
             ghost.checkCollision();
         });
         this.checkPlayerGhostCollisions()
         this.door.checkPlayerCollision()
+        this.livesArr.forEach(heart => {
+            if(heart.checkPlayerCollision()) {
+                heart.addOneLife()
+            }
+        })
+        if (this.key !== undefined) this.key.checkPlayerCollision()
         //if (this.map[102] === 6) this.key.checkPlayerCollision()
     },
 
