@@ -19,7 +19,7 @@ class Ghost {
     }
 
     move() {
-        
+
         if (this.direction === 'vertical') {
             if (this.checkCollision()) {  
                 this.speed *= -1;
@@ -33,6 +33,28 @@ class Ghost {
             }
             this.updatePosition(4);
         }
+
+        // const framesSecond = 1000 / game.timeInterval;
+        // const frames = framesSecond * game.ghostTime;
+        // game.currentFrame += 1;
+        // if (game.currentFrame === frames) {
+        //     if (this.direction === 'vertical') {
+        //         if (this.checkCollision()) {  
+        //             this.speed *= -1;
+        //         }
+        //         this.updatePosition(3);
+        //     }
+    
+        //     if (this.direction === 'horizontal') {
+        //         if (this.checkCollision()) {  
+        //             this.speed *= -1;
+        //         }
+        //         this.updatePosition(4);
+        //     }
+        // } else {
+        //     null;
+        // }
+        // game.currentFrame %= frames;
     }
 
     checkCollision() {
