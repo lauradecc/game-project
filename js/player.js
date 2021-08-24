@@ -1,5 +1,5 @@
 class Player {
-    constructor(ctx, index, width, height){ //canvasSize????
+    constructor(ctx, index, image, frames, width, height){ //canvasSize????
         this.ctx = ctx;
         this.i = index;
         this.x = (this.i % 50) * 20;
@@ -14,16 +14,28 @@ class Player {
             left: 'ArrowLeft',
             right: 'ArrowRight'
         };
-        //this.speed = 10;
         this.lives = 3;
         this.hasKey = false;
         this.hasTouchedDoor = false;
+        // Direction: 0-face, 1-up, 2-right, 3-left
+        this.direction = 0;
+        this.frames = frames;
+        this.counter = 0;
+        this.init(frames, image);
+        this.image.frameIndex = {x: 0, y: 0};
 
     }
 
     /* En init meter new image, cosas de frames y set listener
     (esto último para quitarlo de init game) */
-    // init() {}
+    init(frames, image) {
+        this.image = new Image()
+        this.image.pathImage = `img/${image}`
+        this.image.src = this.image.pathImage
+        this.image.frames = frames
+        this.image.frameIndex = {x: 0, y: 0}
+        this.setListener()
+        }
 
     //Si creamos más tipos de enemigos, revisar el método .some()
     checkGhostsCollisions() {
@@ -47,10 +59,24 @@ class Player {
     }
 
     draw() {
-        this.ctx.fillStyle= "red"
-        this.x = (this.i % 50) * game.squareSize;
-        this.y = Math.floor(this.i / 50) * game.squareSize;
-        this.ctx.fillRect(this.x, this.y, this.width, this.height)
+        this.x = (this.i % 50) * 20;
+        this.y = Math.floor(this.i / 50) * 20; 
+        this.ctx.drawImage(
+            this.image,
+            //punto de recorte en X inicio
+            this.image.frameIndex.x,
+            //punto de y inicio
+            this.image.frameIndex.y,
+            Math.floor(this.image.width / 4),
+            Math.floor(this.image.height / 4),
+            this.x,
+            this.y,
+            this.width,
+            this.height,
+            
+        )
+        // this.ctx.fillStyle= "red"
+        // this.ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 
     setListener() {
@@ -86,8 +112,17 @@ class Player {
         game.map[desiredPositionIndex] = 2;
     }
 
+    walk() {
+        this.image.frameIndex.x = (this.image.width / 4) * this.counter;
+        this.counter++;
+        this.counter %= this.frames;
+        this.image.frameIndex.y = (this.image.height / 4) * this.direction;
+    }
+
     moveUp() {
         const desiredPositionIndex = this.i - 50;
+        this.direction = 1;
+        this.walk();
         if (!this.willBeCollision(desiredPositionIndex)) {
             this.updatePosition(desiredPositionIndex)
         }
@@ -95,6 +130,8 @@ class Player {
 
     moveDown() {
         const desiredPositionIndex = this.i + 50;
+        this.direction = 0;
+        this.walk();
         if (!this.willBeCollision(desiredPositionIndex)) {
             this.updatePosition(desiredPositionIndex)
         }
@@ -102,6 +139,8 @@ class Player {
 
     moveLeft() {
         const desiredPositionIndex = this.i - 1;
+        this.direction = 3;
+        this.walk();
         if (!this.willBeCollision(desiredPositionIndex)) {
             this.updatePosition(desiredPositionIndex)
         }
@@ -109,9 +148,13 @@ class Player {
 
     moveRight() {
         const desiredPositionIndex = this.i + 1;
+        this.direction = 2;
+        this.walk();
         if (!this.willBeCollision(desiredPositionIndex)) {
             this.updatePosition(desiredPositionIndex)
         }
     }
+
+
 
 }

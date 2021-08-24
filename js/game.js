@@ -5,7 +5,7 @@ const game = {
     background: null,
     timeInterval: 30,
     currentFrame: 0,
-    ghostTime: 4,
+    ghostTime: 2,
     squareSize: 20,
     verticalGhostsArr: [],
     horizontalGhostsArr: [],
@@ -50,18 +50,21 @@ const game = {
         this.canvasSize = {h: 600, w: 1000};
         this.drawMap()
         this.createAll()
-        this.player.setListener()
+        // this.player.setListener()
         this.concatGhosts()
         this.start();
     },
 
     start() {
         setInterval(() => {
+            this.currentFrame++
             this.clearAll()
             this.updateObjects()
             this.drawMap()
             this.drawAll()
-            this.moveAll()
+            // console.log(this.currentFrame)
+            this.currentFrame === this.ghostTime ? this.moveAll() : null
+            this.currentFrame %= this.ghostTime;
             this.checkAllCollisions()
             // this.drawText()
         }, 1000 / this.timeInterval);
@@ -90,7 +93,7 @@ const game = {
 
     // Posición inicial calculada manualmente a partir del index del array donde queremos que empiece (458)
     createPlayer() {
-        this.player = new Player(this.ctx, this.map.indexOf(2), 20, 20)
+        this.player = new Player(this.ctx, this.map.indexOf(2), 'player.png', 4, 20, 20)
     },
 
     createAll() {
@@ -139,6 +142,7 @@ const game = {
     },
     
     moveAll() {
+
         this.verticalGhostsArr.forEach(ghost => {
             ghost.move();
         });
