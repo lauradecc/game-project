@@ -11,6 +11,7 @@ const game = {
     horizontalGhostsArr: [],
     allGhostsArr: [],
     livesArr: [],
+
     map: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
            0,1,1,1,1,1,1,1,1,1,1,5,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,3,1,1,1,1,1,1,1,1,1,1,3,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
@@ -42,6 +43,10 @@ const game = {
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 
+    // mapSize: this.map.length(),
+    // mapColums: 50,
+    // mapRows: 30,
+
 
     init(id) {
         this.canvas = document.getElementById(id);
@@ -71,14 +76,67 @@ const game = {
     },
 
     drawMap() {
-        for (let i = 0; i < this.map.length; i++) {
-            const cell = this.map[i]
-            const posX = (i % 50) * this.squareSize
-            const posY = Math.floor(i / 50) * this.squareSize
-            this.ctx.fillStyle = this.map[i] === 1 ? '#FFF' : '#000';
-            this.ctx.fillRect(posX, posY, this.squareSize, this.squareSize);
-        }
+        this.createFloor('floor.png')
+        this.drawFloor()
+        // for (let i = 0; i < this.map.length; i++) {
+        //     const cell = this.map[i]
+        //     const posX = (i % 50) * this.squareSize
+        //     const posY = Math.floor(i / 50) * this.squareSize
+        //     this.ctx.fillStyle = this.map[i] === 1 ? 'white' : '#000';
+        //     this.ctx.fillRect(posX, posY, this.squareSize, this.squareSize);
+        // }
     },
+
+    floor: new Image(),
+
+    createFloor(image, frames = 4) {
+        // this.floor = new Image()
+        this.floor.pathImage = `img/${image}`
+        this.floor.src = this.floor.pathImage
+        this.floor.frames = frames
+        this.floor.frameIndex = {x: 0, y: 0}
+    },
+
+    // REVISAR ¡¡¡¡ No funciona.
+    drawFloor(frames = 4) {
+        this.map.forEach((number, index) => { 
+            this.x = (index % 50) * 20;
+            this.y = Math.floor(index / 50) * 20; 
+            if (number === 0) {
+                this.ctx.fillStyle = '#000'
+                this.ctx.fillRect(this.x, this.y, this.squareSize, this.squareSize)
+            } 
+            if (number === 1 || number === 2) {
+                let counter = 0;
+                this.ctx.drawImage(
+                    this.floor,
+                    //punto de recorte en X inicio
+                    Math.floor(64/ frames) * counter,
+                    // (Math.random() * 3) +1
+                    // 16,
+                    //punto de y inicio
+                    0,
+                    Math.floor(this.floor.width / frames),
+                    this.floor.height,
+                    this.x,
+                    this.y,
+                    this.squareSize,
+                    this.squareSize,
+                    // this.canvasSize.w,
+                    // this.canvasSize.h, 
+                    
+                )
+                counter++
+                counter %= frames;
+            }
+        });
+        // for (let c = 0; c < this.mapColums; c++){
+        //     for (let r = 0; r < this.mapRows; r++){
+        //         let tile = this.map.getTile(c, r)
+        //     }
+        // }
+    },
+
 
     /*
     drawText() {

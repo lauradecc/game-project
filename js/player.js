@@ -59,6 +59,7 @@ class Player {
     }
 
     draw() {
+        
         this.x = (this.i % 50) * 20;
         this.y = Math.floor(this.i / 50) * 20; 
         this.ctx.drawImage(
@@ -67,16 +68,13 @@ class Player {
             this.image.frameIndex.x,
             //punto de y inicio
             this.image.frameIndex.y,
-            Math.floor(this.image.width / 4),
-            Math.floor(this.image.height / 4),
+            Math.floor(this.image.width / this.frames),
+            Math.floor(this.image.height / this.frames),
             this.x,
             this.y,
             this.width,
             this.height,
-            
         )
-        // this.ctx.fillStyle= "red"
-        // this.ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 
     setListener() {
