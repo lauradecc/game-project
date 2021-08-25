@@ -1,5 +1,5 @@
 class Heart {
-    constructor(ctx, index, width, height){ 
+    constructor(ctx, index, width, height) { 
         this.ctx = ctx;
         this.i = index;
         this.x = (this.i % 50) * 20;
@@ -7,11 +7,6 @@ class Heart {
         this.width = width;
         this.height = height;
         this.toDelete = false
-    }
-
-    draw() {
-        this.ctx.fillStyle= "purple";
-        this.ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 
     // Es la misma que en Key, lo ponemos en 'game' con parametro? 

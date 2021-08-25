@@ -26,8 +26,6 @@ class Player {
 
     }
 
-    /* En init meter new image, cosas de frames y set listener
-    (esto último para quitarlo de init game) */
     init(frames, image) {
         this.image = new Image()
         this.image.pathImage = `img/${image}`
@@ -64,9 +62,7 @@ class Player {
         this.y = Math.floor(this.i / 50) * 20; 
         this.ctx.drawImage(
             this.image,
-            //punto de recorte en X inicio
             this.image.frameIndex.x,
-            //punto de y inicio
             this.image.frameIndex.y,
             Math.floor(this.image.width / this.frames),
             Math.floor(this.image.height / this.frames),
@@ -111,10 +107,10 @@ class Player {
     }
 
     walk() {
-        this.image.frameIndex.x = (this.image.width / 4) * this.counter;
+        this.image.frameIndex.x = (this.image.width / this.frames) * this.counter;
         this.counter++;
         this.counter %= this.frames;
-        this.image.frameIndex.y = (this.image.height / 4) * this.direction;
+        this.image.frameIndex.y = (this.image.height / this.frames) * this.direction;
     }
 
     moveUp() {
