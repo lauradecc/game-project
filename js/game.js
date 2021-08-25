@@ -49,17 +49,25 @@ const game = {
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
            0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-           0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+           0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+           0,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,0,
+           0,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,0,
+           0,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,0,
+           0,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,0,
+           0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
 
     init(id) {
         this.canvas = document.getElementById(id);
         this.ctx = this.canvas.getContext('2d');
         //// Medidias fijas o en función de la pantalla?
-        this.canvasSize = {h: 600, w: 1000};
+        this.canvasSize = {h: 700, w: 1000};
+        this.canvas.setAttribute("width", this.canvasSize.w)
+        this.canvas.setAttribute("height", this.canvasSize.h)
         this.setImage(this.floorImg, 'floor.png', 4)
         this.staticRandomFloor()
-        this.drawGame()
         this.createAll()
+        this.drawGame()
+        this.drawPlayer()
         this.concatGhosts()
         this.start();
     },
@@ -69,12 +77,12 @@ const game = {
             this.currentFrame++
             this.clearAll()
             this.updateObjects()
-            this.drawGame() 
-            this.drawAll()
             this.currentFrame === this.ghostTime ? this.moveAll() : null
             this.currentFrame %= this.ghostTime;
             this.checkAllCollisions()
-            // this.drawText()
+            this.drawGame() 
+            this.drawPlayer()
+            this.drawBox()
         }, 1000 / this.timeInterval);
     },
 
@@ -103,21 +111,47 @@ const game = {
             this.y = Math.floor(index / 50) * 20; 
 
             if (number === 0) {
-                this.drawWall()
+                this.drawWall();
             } 
             if (number !== 0) {
-                this.drawFloor(index)
+                this.drawFloor(index);
             }
             if (number === 5) {
                 this.drawDoor();
             }
             if (number === 6) {
-                this.drawKey();
+                this.drawKey(this.x, this.y);
             }
             if (number === 7) {
-                this.drawHearts();
+                this.drawHearts(this.x + 2.5, this.y + 2.5);
             }
+            // Nos rompe el juego :( .
+            // if (number === 2) {
+            //     this.player.draw();
+            // }
+            if (number === 3) {
+                this.verticalGhostsArr.forEach(ghost => {
+                    ghost.draw(ghost.image.frameIndexVertical);
+                });
+            }
+            if (number === 4) {
+                this.horizontalGhostsArr.forEach(ghost => {
+                    ghost.draw(ghost.image.frameIndexHorizontal);
+                });
+            }
+            if (number === 9) {
+                this.drawBoxBackground();
+            } 
         });
+    },
+
+    drawPlayer() {
+        this.player.draw();
+    },
+
+    drawBoxBackground() {
+        this.ctx.fillStyle = '#585147';
+        this.ctx.fillRect(this.x, this.y, this.squareSize, this.squareSize);
     },
 
     drawWall() {
@@ -145,25 +179,38 @@ const game = {
         this.setImage(this.doorImg, 'door.png', 2);
     },
 
-    drawKey() {
-        this.ctx.drawImage(this.keyImg, this.x, this.y, this.squareSize, this.squareSize);
+    drawKey(x, y) {
+        this.ctx.drawImage(this.keyImg, x, y, this.squareSize, this.squareSize);
         this.setImage(this.keyImg, 'key.png', 1);
     },
 
-    drawHearts() {
-        this.ctx.drawImage(this.heartImg, this.x + 2.5, this.y + 2.5, 
+    drawHearts(x, y) {
+        this.ctx.drawImage(this.heartImg, x, y, 
         this.squareSize * 0.75, this.squareSize * 0.75);
         this.setImage(this.heartImg, 'heart.png', 1);
     },
 
-    /*
-    drawText() {
-        this.ctx.font = '30px serif';
-        this.ctx.fillStyle = 'yellow';
-        this.ctx.fillText(`Lives: ${player.lives}`, 450, 35)
+    drawBox() {
+        this.drawText();
+        this.drawLives();
+        this.player.hasKey ? this.drawKey(670, 631) : null;
     },
-    */
 
+    drawText() {
+        this.ctx.font = '20px "Press Start 2P"';
+        this.ctx.fillStyle = 'black';
+        this.ctx.fillText('Lives:', 70, 650);
+        this.ctx.fillText('Objects:', 500, 650);
+    },
+
+    drawLives() {
+        let x = 200;
+        for (let i = 0; i < this.player.lives; i++) {
+            this.drawHearts(x, 631);
+            x += 30;
+        }
+    },
+    
     clearAll() {
         this.ctx.clearRect(0, 0, this.canvasSize.w, this.canvasSize.h)
     },
@@ -191,11 +238,6 @@ const game = {
     createPlayer(index) {
         this.player = new Player(this.ctx, index, 'player.png', 4, this.squareSize, this.squareSize)
     },
-
-    // createGhosts(index) {
-    //     this.createVerticalGhosts(index);
-    //     this.createHorizontalGhosts(index);
-    // },
 
     createVerticalGhosts(index) {
         this.verticalGhostsArr.push(new Ghost(this.ctx, index, 'vertical', 
@@ -227,17 +269,6 @@ const game = {
         this.clearObjects();
     }, 
 
-    //Esto debería ir en drawGame, pero lo tenemos desvinculado?
-    drawAll() {
-        this.player.draw();
-        this.verticalGhostsArr.forEach(ghost => {
-            ghost.draw(ghost.image.frameIndexVertical);
-        });
-        this.horizontalGhostsArr.forEach(ghost => {
-            ghost.draw(ghost.image.frameIndexHorizontal);
-        });
-    },
-    
     moveAll() {
         this.verticalGhostsArr.forEach(ghost => {
             ghost.move();

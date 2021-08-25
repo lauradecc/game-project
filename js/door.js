@@ -1,12 +1,11 @@
 class Door {
-    constructor(ctx, index, width, height) { //canvasSize????
+    constructor(ctx, index, width, height) {
         this.ctx = ctx;
         this.i = index;
         this.x = (this.i % 50) * 20;
         this.y = Math.floor(this.i / 50) * 20; 
         this.width = width;
         this.height = height;
-        // Width y height depende de los números en el array o de tamaño, imagen o what??
     }
 
     // Esto aquí o en game?? Si lo movemos a game, mirar bien 'this', etc.
@@ -17,6 +16,7 @@ class Door {
     checkPlayerCollision() {
         if (game.player.i - 50 === this.i) {
             if (game.player.hasKey === false) {
+                // 438 real, 102 prueba
                 game.map[438] = 6;
                 game.player.hasTouchedDoor = true;
             } else {

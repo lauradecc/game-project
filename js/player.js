@@ -1,5 +1,5 @@
 class Player {
-    constructor(ctx, index, image, frames, width, height){ //canvasSize????
+    constructor(ctx, index, image, frames, width, height){
         this.ctx = ctx;
         this.i = index;
         this.x = (this.i % 50) * 20;
@@ -114,6 +114,7 @@ class Player {
     }
 
     moveUp() {
+        
         const desiredPositionIndex = this.i - 50;
         this.direction = 1;
         this.walk();
@@ -148,7 +149,5 @@ class Player {
             this.updatePosition(desiredPositionIndex)
         }
     }
-
-
 
 }

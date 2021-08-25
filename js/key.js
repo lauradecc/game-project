@@ -1,5 +1,5 @@
 class Key {
-    constructor(ctx, index, width, height) { //canvasSize????
+    constructor(ctx, index, width, height) {
         this.ctx = ctx;
         this.i = index;
         this.x = (this.i % 50) * 20;
