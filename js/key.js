@@ -7,22 +7,20 @@ class Key {
         this.width = width;
         this.height = height;
     }
-    
-    checkPlayerCollision() {
-        return game.player.i === this.i
+
+    isCollision(bool) {
+        if (bool) {
+            this.playerTakesKey();
+        }
     }
 
     playerTakesKey() {
-        if (game.player.hasTouchedDoor && this.checkPlayerCollision()) {
-            game.player.hasKey = true;
-        }
+        game.player.hasKey = true;
     }
 
     // When player touches key, key disappears
     clear() {
         game.map[this.i] = 1;
     }
-
-
 
 }

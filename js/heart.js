@@ -9,16 +9,17 @@ class Heart {
         this.toDelete = false
     }
 
-    // Es la misma que en Key, lo ponemos en 'game' con parametro? 
-    checkPlayerCollision() {
-        return game.player.i === this.i
+    isCollision(bool) {
+        if (bool) {
+            this.addOneLife();
+        }
     }
 
     // When player touches heart, heart disappears
     addOneLife() {
         game.player.lives++;
         game.map[this.i] = 1;
-        this.toDelete = true
+        this.toDelete = true;
     }
 
 }
