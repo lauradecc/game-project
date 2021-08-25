@@ -7,13 +7,15 @@ const game = {
 
     timeInterval: 30,
     currentFrame: 0,
-    ghostTime: 2,
+    ghostTime: 3,
 
     verticalGhostsArr: [],
     horizontalGhostsArr: [],
     allGhostsArr: [],
     livesArr: [],
     floorArr: [],
+    
+    currentLevel: 1,
 
     floorImg: new Image(),
     heartImg: new Image(),
@@ -32,7 +34,7 @@ const game = {
         this.changeLevel(level1)
         this.setImage(this.floorImg, 'floor.png', 4)
         this.staticRandomFloor()
-        this.createAll()
+        this.createAll(102)
         this.drawGame()
         this.drawPlayer()
         this.concatGhosts()
@@ -60,9 +62,17 @@ const game = {
         keyName.frames = frames
     },
 
+    // Cómo hacemos para que argumento level sea levelX ???
     changeLevel(level) {
+        this.verticalGhostsArr = [];
+        this.horizontalGhostsArr = [];
+        this.allGhostsArr = [];
+        this.clearAll();
+        this.key = undefined;
         this.map = level.map;
-        // this.door = map2.door
+        this.createAll(110);
+        this.concatGhosts();
+        this.start();
     },
 
     // Create random floor
@@ -102,14 +112,10 @@ const game = {
             //     this.player.draw();
             // }
             if (number === 3) {
-                this.verticalGhostsArr.forEach(ghost => {
-                    ghost.draw(ghost.image.frameIndexVertical);
-                });
+                this.drawVerticalGhosts();
             }
             if (number === 4) {
-                this.horizontalGhostsArr.forEach(ghost => {
-                    ghost.draw(ghost.image.frameIndexHorizontal);
-                });
+                this.drawHorizontalGhosts();
             }
             if (number === 9) {
                 this.drawBoxBackground();
@@ -119,6 +125,18 @@ const game = {
 
     drawPlayer() {
         this.player.draw();
+    },
+
+    drawVerticalGhosts() {
+        this.verticalGhostsArr.forEach(ghost => {
+            ghost.draw(ghost.image.frameIndexVertical);
+        });
+    },
+
+    drawHorizontalGhosts() {
+        this.horizontalGhostsArr.forEach(ghost => {
+            ghost.draw(ghost.image.frameIndexHorizontal);
+        });
     },
 
     drawBoxBackground() {
@@ -187,7 +205,7 @@ const game = {
         this.ctx.clearRect(0, 0, this.canvasSize.w, this.canvasSize.h)
     },
 
-    createAll() {
+    createAll(keyIndex) {
         this.map.forEach((number, index) => {
             if (number === 2) {
                 this.createPlayer(index);
@@ -199,7 +217,7 @@ const game = {
                 this.createHorizontalGhosts(index);
             }
             if (number === 5) {
-                this.createDoor(index);
+                this.createDoor(index, keyIndex);
             }
             if (number === 7) {
                 this.createHearts(index);
@@ -221,8 +239,8 @@ const game = {
         'skeleton.png', 3, 1, this.squareSize * 2, this.squareSize * 2));
     },
 
-    createDoor(index) {
-        this.door = new Door(this.ctx, index, 20, 20, 102)
+    createDoor(index, keyIndex) {
+        this.door = new Door(this.ctx, index, 20, 20, keyIndex)
     },
 
     createHearts(index) {
@@ -276,7 +294,9 @@ const game = {
         this.livesArr.forEach(heart => {
             heart.isCollision(this.checkPlayerCollision(heart));
         });
-        if (this.key !== undefined) this.key.isCollision(this.checkPlayerCollision(this.key))
+        if (this.key !== undefined) {
+            this.key.isCollision(this.checkPlayerCollision(this.key))
+        }
     },
 
     concatGhosts() {

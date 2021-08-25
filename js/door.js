@@ -30,6 +30,8 @@ class Door {
     }
 
     goNextLevel() {
+        //esto de current level lo dejamos??? funciona???
+        game.currentLevel++;
         game.changeLevel(level2);
     }
 
