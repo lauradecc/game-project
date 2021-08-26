@@ -10,7 +10,25 @@
     <link rel="stylesheet" href="style/style.css">
     <title>Videogame</title>
 </head>
-<body>
+<body class="pixel-font">
+
+    <div id="first-page">
+        <h1>Free <br> The <br> Pug</h1>
+        <div id="start-button">
+            <button class="pixel-font button" onclick="displayInitial()">Save The Pug</button>
+        </div>
+    </div>
+
+    <div id="second-page">
+        <div id="story-box">
+            <p>The pug was kidnapped, <br> by some evil skeletons, <br> please help me find it.</p>
+            <img src="img/pixel-pugs.png" alt="Pixel pugs running">
+            <div>
+                <button class="pixel-font button" onclick="displayNone()">Save The Pug</button>
+            </div>
+        </div>
+    </div>
+
     <canvas id="canvas"></canvas>
     <script src="js/player.js"></script>
     <script src="js/heart.js"></script>
