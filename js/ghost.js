@@ -16,15 +16,15 @@ class Ghost {
     }
 
     init(frames, image) {
-        this.image = new Image()
-        this.image.pathImage = `img/${image}`
-        this.image.src = this.image.pathImage
-        this.image.frames = frames
+        this.image = new Image();
+        this.image.pathImage = `img/${image}`;
+        this.image.src = this.image.pathImage;
+        this.image.frames = frames;
     }
 
     draw(frameIndex) {
-        this.x = (this.i % 50) * 20;
-        this.y = Math.floor(this.i / 50) * 20; 
+        this.x = (this.i % 50) * game.squareSize;
+        this.y = Math.floor(this.i / 50) * game.squareSize; 
         this.ctx.drawImage(
             this.image,
             frameIndex.x,
@@ -36,7 +36,7 @@ class Ghost {
             this.y - game.squareSize,
             this.width,
             this.height,
-        )
+        );
     }
 
     updateX(frameIndex) {
@@ -66,26 +66,20 @@ class Ghost {
     move() {
 
         if (this.direction === 'vertical') {
-            if (this.checkCollision()) {  
-                this.speed *= -1;
-            }
-            this.walkVertical()
+            if (this.checkCollision()) this.speed *= -1;
+            this.walkVertical();
             this.updatePosition(3);
         }
 
         if (this.direction === 'horizontal') {
-            if (this.checkCollision()) {  
-                this.speed *= -1;
-            }
-            this.walkHorizontal()
+            if (this.checkCollision()) this.speed *= -1;
+            this.walkHorizontal();
             this.updatePosition(4);
         }
     }
 
     checkCollision() {
-        if (game.map[this.i + this.speed] === 0) {
-            return true;
-        }
+        return game.map[this.i + this.speed] === 0;
     }
 
     updatePosition(number) {

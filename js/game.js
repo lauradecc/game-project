@@ -219,7 +219,7 @@ const game = {
     drawBox() {
         this.drawText();
         this.drawLives();
-        this.player.hasKey ? this.drawKey(610, 631) : null;
+        this.player.hasKey ? this.drawKey(640, 631) : null;
     },
 
     drawText() {
@@ -227,7 +227,7 @@ const game = {
         this.ctx.fillStyle = 'black';
         this.ctx.fillText('Lives:', 70, 650);
         this.ctx.fillText('Objects:', 470, 650);
-        this.ctx.fillText(`level ${this.currentLevel}`, 780, 650);
+        this.ctx.fillText(`Level ${this.currentLevel}`, 780, 650);
     },
 
     drawLives() {

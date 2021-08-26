@@ -23,43 +23,20 @@ class Player {
         this.counter = 0;
         this.init(frames, image);
         this.image.frameIndex = {x: 0, y: 0};
-
     }
 
     init(frames, image) {
-        this.image = new Image()
-        this.image.pathImage = `img/${image}`
-        this.image.src = this.image.pathImage
-        this.image.frames = frames
-        this.image.frameIndex = {x: 0, y: 0}
-        this.setListener()
+        this.image = new Image();
+        this.image.pathImage = `img/${image}`;
+        this.image.src = this.image.pathImage;
+        this.image.frames = frames;
+        this.image.frameIndex = {x: 0, y: 0};
+        this.setListener();
         }
 
-    //Si creamos más tipos de enemigos, revisar el método .some()
-    // checkGhostsCollisions() {
-    //     game.ghostsArray.forEach(ghost => {
-    //         if (ghost.x < this.x + this.width &&
-    //             ghost.x + ghost.width > this.x &&
-    //             ghost.y < this.y + this.height &&
-    //             ghost.height + ghost.y > this.y) {
-    //                 this.lives--;
-    //                 this.x = this.initialPosition.x;
-    //                 this.y = this.initialPosition.y;
-    //                 if (this.lives === 0) {
-    //                     // Gestión de GAME OVER !!!!!!
-    //                     // Se acaba antes de que le toque?
-    //                     alert("GAME OVER")
-    //                     this.lives = 3;
-    //                 }
-    //                 console.log(this.lives)
-    //         }
-    //     });
-    // }
-
     draw() {
-        
-        this.x = (this.i % 50) * 20;
-        this.y = Math.floor(this.i / 50) * 20; 
+        this.x = (this.i % 50) * game.squareSize;
+        this.y = Math.floor(this.i / 50) * game.squareSize; 
         this.ctx.drawImage(
             this.image,
             this.image.frameIndex.x,
@@ -70,7 +47,7 @@ class Player {
             this.y,
             this.width,
             this.height,
-        )
+        );
     }
 
     setListener() {
@@ -97,7 +74,6 @@ class Player {
         return !(game.map[desiredPositionIndex] === 1 
                 || game.map[desiredPositionIndex] === 6
                 || game.map[desiredPositionIndex] === 7);
-
     }
 
     updatePosition(desiredPositionIndex) {
@@ -114,7 +90,6 @@ class Player {
     }
 
     moveUp() {
-        
         const desiredPositionIndex = this.i - 50;
         this.direction = 1;
         this.walk();

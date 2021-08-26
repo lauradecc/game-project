@@ -1,4 +1,5 @@
 class Key {
+
     constructor(ctx, index, width, height) {
         this.ctx = ctx;
         this.i = index;
@@ -9,9 +10,7 @@ class Key {
     }
 
     isCollision(bool) {
-        if (bool) {
-            this.playerTakesKey();
-        }
+        if (bool) this.playerTakesKey();
     }
 
     playerTakesKey() {
