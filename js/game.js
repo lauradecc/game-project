@@ -17,6 +17,7 @@ const game = {
     
     currentLevel: 1,
 
+    wallImg: new Image(),
     floorImg: new Image(),
     heartImg: new Image(),
     keyImg: new Image(),
@@ -33,6 +34,7 @@ const game = {
         this.canvas.setAttribute("height", this.canvasSize.h)
         this.changeLevel(level1)
         this.setImage(this.floorImg, 'floor.png', 4)
+        this.setImage(this.wallImg, 'wall.png', 1)
         this.staticRandomFloor()
         this.createAll(102)
         this.drawGame()
@@ -72,7 +74,6 @@ const game = {
         this.map = level.map;
         this.createAll(110);
         this.concatGhosts();
-        this.start();
     },
 
     // Create random floor
@@ -145,8 +146,13 @@ const game = {
     },
 
     drawWall() {
-        this.ctx.fillStyle = '#000';
-        this.ctx.fillRect(this.x, this.y, this.squareSize, this.squareSize);
+        this.ctx.drawImage(
+            this.wallImg,
+            this.x,
+            this.y,
+            this.squareSize,
+            this.squareSize,                    
+        );
     },
 
     drawFloor(index, frames = 4) {
@@ -261,12 +267,8 @@ const game = {
     }, 
 
     moveAll() {
-        this.verticalGhostsArr.forEach(ghost => {
-            ghost.move();
-        });
-        this.horizontalGhostsArr.forEach(ghost => {
-            ghost.move();
-        });
+        this.verticalGhostsArr.forEach(ghost => ghost.move());
+        this.horizontalGhostsArr.forEach(ghost => ghost.move());
     },
 
     clearObjects() {
@@ -286,14 +288,10 @@ const game = {
     },
 
     checkAllCollisions() {
-        this.verticalGhostsArr.forEach(ghost => {
-            ghost.checkCollision();
-        });
+        this.verticalGhostsArr.forEach(ghost => ghost.checkCollision());
         this.checkPlayerGhostCollisions()
         this.door.isCollision(this.checkAdjacentCollision(this.door))
-        this.livesArr.forEach(heart => {
-            heart.isCollision(this.checkPlayerCollision(heart));
-        });
+        this.livesArr.forEach(heart => heart.isCollision(this.checkPlayerCollision(heart)));
         if (this.key !== undefined) {
             this.key.isCollision(this.checkPlayerCollision(this.key))
         }
