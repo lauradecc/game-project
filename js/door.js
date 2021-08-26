@@ -14,13 +14,7 @@ class Door {
     // si queremos que aparezca la llave al tocar la puerta por los lados, también + 50 -50, diagonal?
 
     isCollision(bool) {
-        if (bool) {
-            if (game.player.hasKey === false) {
-                this.showKey();
-            } else {
-                this.goNextLevel();
-            }
-        }
+        if (bool) game.player.hasKey === false ? this.showKey() : this.goNextLevel()
     }
 
     showKey() {
@@ -29,10 +23,10 @@ class Door {
         game.player.hasTouchedDoor = true;
     }
 
+    // En el ultimo nivel ???
     goNextLevel() {
-        //esto de current level lo dejamos??? funciona???
         game.currentLevel++;
-        game.changeLevel(level2);
+        game.changeLevel(game.levels[game.currentLevel]);
     }
 
 }

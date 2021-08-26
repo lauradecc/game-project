@@ -1,36 +1,5 @@
 const level2 = {
 
-/*
-Los esqueletos que salen son del nivel 1
-el player sale donde acaba en el 1
-quitar la llave (playerhaskey false)
-la posición de la llave depende de un parámetro de door, hay que hacer eso
-
-vaciar array de ghosts
-create all otra vez
-
-game.verticalGhostsArr = [];
-game.horizontalGhostsArr = [];
-game.allGhostsArr = [];
-game.createAll(110);
-
-
-changeLevel(levelNum) {
-const level = `level${levelNum}`
-this.verticalGhostsArr = [];
-this.horizontalGhostsArr = [];
-this.allGhostsArr = [];
-this.clearAll();
-this.key = undefined;
-this.map = level.map;
-this.createAll(110);
-this.concatGhosts();
-this.start();
-},
-
-*/
-
-
     map: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,3,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,
         0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,1,1,7,1,0,
@@ -67,7 +36,4 @@ this.start();
         0,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 
-    door: new Door()
 }
-
-

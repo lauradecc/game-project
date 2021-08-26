@@ -16,6 +16,7 @@ const game = {
     floorArr: [],
     
     currentLevel: 1,
+    levels: ['', level1, level2],
 
     wallImg: new Image(),
     floorImg: new Image(),
@@ -35,12 +36,15 @@ const game = {
         this.changeLevel(level1)
         this.setImage(this.floorImg, 'floor.png', 4)
         this.setImage(this.wallImg, 'wall.png', 1)
-        this.staticRandomFloor()
-        this.createAll(102)
-        this.drawGame()
-        this.drawPlayer()
-        this.concatGhosts()
-        this.start();
+
+        this.floorImg.onload = () => {
+            this.staticRandomFloor()
+            this.createAll(102)
+            this.drawGame()
+            this.drawPlayer()
+            this.concatGhosts()
+            this.start();
+        }
     },
     
     start() {
