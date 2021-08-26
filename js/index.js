@@ -1,6 +1,6 @@
 function displayInitial() {
     document.getElementById("canvas").style.display = "initial"
-    document.getElementById("second-page").style.display = "initial"
+    document.getElementById("second-page").style.display = "flex"
     document.getElementById("story-box").style.display = "initial"
     document.getElementById("first-page").style.display = "none"
 }

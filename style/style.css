@@ -34,7 +34,6 @@ h1 {
 #second-page {
     height: 700px;
     width: 1000px;
-    display: flex;
     justify-content: center;
     align-items: center;
     display: none;
@@ -43,7 +42,7 @@ h1 {
 
 #story-box {
     height: 250px;
-    width: 450px;
+    width: 480px;
     border: 20px solid #585147;
     background-color: white;
     text-align: center;
@@ -54,6 +53,7 @@ h1 {
 
 #story-box p {
     margin-top: 40px;
+    line-height: 1.5;
 }
 
 #story-box button {
