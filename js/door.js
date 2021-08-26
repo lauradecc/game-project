@@ -27,7 +27,7 @@ class Door {
     // En el ultimo nivel ???
     goNextLevel() {
         game.currentLevel++;
-        game.changeLevel(game.levels[game.currentLevel]);
+        game.changeLevel(game.levels[game.currentLevel], game.keyIndex[game.currentLevel]);
     }
 
 }

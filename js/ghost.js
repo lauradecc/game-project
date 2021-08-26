@@ -1,16 +1,13 @@
 class Ghost {
-    constructor(ctx, index, direction, image, frames, speed, width, height){ //canvasSize????
+    constructor(ctx, index, direction, image, frames, speed, width, height) {
         this.ctx = ctx;
         this.i = index;
-        this.x = (this.i % 50) * 20;
-        this.y = Math.floor(this.i / 50) * 20; 
+        this.x = (this.i % 50) * game.squareSize;
+        this.y = Math.floor(this.i / 50) * game.squareSize; 
         this.width = width;
         this.height = height;
-        // Metemos valocidad como parámetro para distintos niveles?
         this.speed = speed;
         this.direction = direction;
-        // Direction: 0-face, 1-up, 2-right, 3-left
-        //this.direction = 0;
         this.frames = frames;
         this.counter = 0;
         this.init(frames, image);

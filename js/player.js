@@ -2,8 +2,8 @@ class Player {
     constructor(ctx, index, image, frames, width, height){
         this.ctx = ctx;
         this.i = index;
-        this.x = (this.i % 50) * 20;
-        this.y = Math.floor(this.i / 50) * 20; 
+        this.x = (this.i % 50) * game.squareSize;
+        this.y = Math.floor(this.i / 50) * game.squareSize; 
         this.initialIndex = this.i;
         this.initialPosition = {x: this.x, y: this.y};
         this.width = width;
@@ -14,7 +14,7 @@ class Player {
             left: 'ArrowLeft',
             right: 'ArrowRight'
         };
-        this.lives = 3;
+        this.lives = 2;
         this.hasKey = false;
         this.hasTouchedDoor = false;
         // Direction: 0-face, 1-up, 2-right, 3-left
@@ -36,25 +36,25 @@ class Player {
         }
 
     //Si creamos más tipos de enemigos, revisar el método .some()
-    checkGhostsCollisions() {
-        game.ghostsArray.forEach(ghost => {
-            if (ghost.x < this.x + this.width &&
-                ghost.x + ghost.width > this.x &&
-                ghost.y < this.y + this.height &&
-                ghost.height + ghost.y > this.y) {
-                    this.lives--;
-                    this.x = this.initialPosition.x;
-                    this.y = this.initialPosition.y;
-                    if (this.lives === 0) {
-                        // Gestión de GAME OVER !!!!!!
-                        // Se acaba antes de que le toque?
-                        alert("GAME OVER")
-                        this.lives = 3;
-                    }
-                    console.log(this.lives)
-            }
-        });
-    }
+    // checkGhostsCollisions() {
+    //     game.ghostsArray.forEach(ghost => {
+    //         if (ghost.x < this.x + this.width &&
+    //             ghost.x + ghost.width > this.x &&
+    //             ghost.y < this.y + this.height &&
+    //             ghost.height + ghost.y > this.y) {
+    //                 this.lives--;
+    //                 this.x = this.initialPosition.x;
+    //                 this.y = this.initialPosition.y;
+    //                 if (this.lives === 0) {
+    //                     // Gestión de GAME OVER !!!!!!
+    //                     // Se acaba antes de que le toque?
+    //                     alert("GAME OVER")
+    //                     this.lives = 3;
+    //                 }
+    //                 console.log(this.lives)
+    //         }
+    //     });
+    // }
 
     draw() {
         

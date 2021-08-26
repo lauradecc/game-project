@@ -13,12 +13,14 @@ class Dog {
         this.init(frames, image);
         this.image.frameIndex = {x: 0, y: (this.image.height / 4) * 2};
     }
+
     init(frames, image) {
         this.image = new Image()
         this.image.pathImage = `img/${image}`
         this.image.src = this.image.pathImage
         this.image.frames = frames
     }
+
     draw() {
         this.x = (this.i % 50) * 20;
         this.y = Math.floor(this.i / 50) * 20; 
@@ -34,12 +36,14 @@ class Dog {
             this.height,
         )
     }
+
     walk() {
         this.image.frameIndex.x = (this.image.width / this.frames) * this.counter;
         this.counter++;
         this.counter %= this.frames;
         this.image.frameIndex.y = (this.image.height / 4) * this.direction;
     }
+
     randomMovement() {
         const dogLeft = -1;
         const dogRight = 1;
@@ -50,6 +54,7 @@ class Dog {
         let randomMovement = possibleMovements[randomNumber]; 
         this.speed = randomMovement;
     }
+
     // Direction: 0-face, 1-up, 2-right, 3-left
     updateDirection(speed) {
         switch(speed) {
@@ -67,9 +72,11 @@ class Dog {
                 break;
         }
     }
+
     willBeCollision(desiredPositionIndex) {
         return game.map[desiredPositionIndex] !== 1;
     }
+
     move() {
         this.randomMovement();
         const desiredPositionIndex = this.i + this.speed;
@@ -81,12 +88,15 @@ class Dog {
         // 8 is dog number
         this.updatePosition(8);
     }
+
     checkCollision() {
         return game.map[this.i + this.speed] !== 1 ;
     }
+
     updatePosition(number) {
         game.map[this.i] = 1;
         game.map[this.i + this.speed] = number;
         this.i += this.speed; 
     }
+    
 }

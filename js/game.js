@@ -26,6 +26,8 @@ const game = {
     keyImg: new Image(),
     doorImg: new Image(),
     dogImg: new Image(),
+    gameOverImg: new Image(),
+    brownWallImg: new Image(),
 
     map: [],
 
@@ -36,9 +38,10 @@ const game = {
         this.canvasSize = {h: 700, w: 1000};
         this.canvas.setAttribute("width", this.canvasSize.w)
         this.canvas.setAttribute("height", this.canvasSize.h)
-        this.changeLevel(this.levels[1], this.keyIndex[1])
+        this.changeLevel(this.levels[this.currentLevel], this.keyIndex[this.currentLevel])
         this.setImage(this.floorImg, 'floor.png', 4)
         this.setImage(this.wallImg, 'wall.png', 1)
+        this.setImage(this.brownWallImg, 'brown-wall.png', 1)
 
         this.floorImg.onload = () => {
             this.staticRandomFloor()
@@ -62,17 +65,9 @@ const game = {
             this.drawPlayer()
             this.drawBox()
         }, 1000 / this.timeInterval);
-        //clearInterval(this.intervalID)
+        
     },
 
-    // Create images
-    setImage(keyName, imageName, frames) {
-        keyName.pathImage = `img/${imageName}`
-        keyName.src = keyName.pathImage
-        keyName.frames = frames
-    },
-
-    // Cómo hacemos para que argumento level sea levelX ???
     changeLevel(level, keyIndex) {
         this.verticalGhostsArr = [];
         this.horizontalGhostsArr = [];
@@ -84,16 +79,8 @@ const game = {
         this.concatGhosts();
     },
 
-    // Create random floor
-    staticRandomFloor(frames = 4) {
-        this.map.forEach((number) => {
-            if (number === 1) {
-                this.floorArr.push((this.floorImg.width / frames) * Math.floor(Math.random() * 4));
-            } else {
-                this.floorArr.push('');
-            }
-        });
-    },
+
+    // DRAW
 
     drawGame() {
         this.map.forEach((number, index) => { 
@@ -101,33 +88,67 @@ const game = {
             this.x = (index % 50) * 20;
             this.y = Math.floor(index / 50) * 20; 
 
+            number === 0 && this.drawWall();
+
+            number !== 0 && this.drawFloor(index);
+
+            number === '!' && this.drawBrownWall();
+
+            number === 3 && this.drawVerticalGhosts();
+
+            number === 4 && this.drawHorizontalGhosts();
+
+            number === 5 && this.drawDoor();
+
+            number === 6 && this.drawKey(this.x, this.y);
+
+            number === 7 && this.drawHearts(this.x + 2.5, this.y + 2.5);
+
+            number === 8 && this.drawDog();
+            
+            number === 9 && this.drawBoxBackground();
+
+            /*
             if (number === 0) {
                 this.drawWall();
             } 
+
             if (number !== 0) {
                 this.drawFloor(index);
             }
+
+            if (number === '!') {
+                this.drawBrownWall();
+            } 
+
             if (number === 3) {
                 this.drawVerticalGhosts();
             }
+
             if (number === 4) {
                 this.drawHorizontalGhosts();
             }
+
             if (number === 5) {
                 this.drawDoor();
             }
+
             if (number === 6) {
                 this.drawKey(this.x, this.y);
             }
+
             if (number === 7) {
                 this.drawHearts(this.x + 2.5, this.y + 2.5);
             }
+
             if (number === 8) {
                 this.drawDog();
             }
+            
             if (number === 9) {
                 this.drawBoxBackground();
             } 
+            */
         });
     },
 
@@ -153,13 +174,11 @@ const game = {
     },
 
     drawWall() {
-        this.ctx.drawImage(
-            this.wallImg,
-            this.x,
-            this.y,
-            this.squareSize,
-            this.squareSize,                    
-        );
+        this.ctx.drawImage(this.wallImg, this.x, this.y, this.squareSize, this.squareSize);
+    },
+
+    drawBrownWall() {
+        this.ctx.drawImage(this.brownWallImg, this.x, this.y, this.squareSize, this.squareSize);
     },
 
     drawFloor(index, frames = 4) {
@@ -207,8 +226,8 @@ const game = {
         this.ctx.font = '20px "Press Start 2P"';
         this.ctx.fillStyle = 'black';
         this.ctx.fillText('Lives:', 70, 650);
-        this.ctx.fillText('Objects:', 440, 650);
-        this.ctx.fillText(`level ${this.currentLevel}`,700, 650 )
+        this.ctx.fillText('Objects:', 470, 650);
+        this.ctx.fillText(`level ${this.currentLevel}`, 780, 650);
     },
 
     drawLives() {
@@ -218,13 +237,27 @@ const game = {
             x += 30;
         }
     },
-    
-    clearAll() {
-        this.ctx.clearRect(0, 0, this.canvasSize.w, this.canvasSize.h)
-    },
+
+
+    // CREATE   
 
     createAll(keyIndex) {
+
         this.map.forEach((number, index) => {
+
+            number === 2 && this.createPlayer(index);
+
+            number === 3 && this.createVerticalGhosts(index);
+
+            number === 4 && this.createHorizontalGhosts(index);
+
+            number === 5 && this.createDoor(index, keyIndex);
+
+            number === 7 && this.createHearts(index);
+
+            number === 8 && this.createDog(index);
+
+            /*
             if (number === 2) {
                 this.createPlayer(index);
             }
@@ -243,6 +276,7 @@ const game = {
             if (number === 8) {
                 this.createDog(index);
             }
+            */
         });
     },
 
@@ -265,30 +299,41 @@ const game = {
     },
 
     createHearts(index) {
-        this.livesArr.push(new Heart(this.ctx, index, 20, 20));
+        this.livesArr.push(new Heart(this.ctx, index, this.squareSize, this.squareSize));
     },
 
     createDog(index) {
         this.dog = new Dog(this.ctx, index, 'pugs.png');
     },
 
-    updateObjects() {
-        this.map.forEach((number, index) => {
-            if (number === 6 && this.key === undefined) {
-                // Create key
-                this.key = new Key(this.ctx, index, 20, 20);
+    // Create random floor
+    staticRandomFloor(frames = 4) {
+        this.map.forEach((number) => {
+            if (number === 1) {
+                this.floorArr.push((this.floorImg.width / frames) * Math.floor(Math.random() * 4));
+            } else {
+                this.floorArr.push('');
             }
-            // } else if (this.key) {
-            //     this.key.playerTakesKey();
-            // } 
         });
-        this.clearObjects();
-    }, 
+    },
 
-    moveAll(currentFrame) {
-        currentFrame % this.ghostTime ? this.verticalGhostsArr.forEach(ghost => ghost.move()) : null
-        currentFrame % this.ghostTime ? this.horizontalGhostsArr.forEach(ghost => ghost.move()) : null;
-        if (this.dog !== undefined) currentFrame === this.dogTime ? this.dog.move() : null;
+    // Create images
+    setImage(keyName, imageName, frames) {
+        keyName.pathImage = `img/${imageName}`
+        keyName.src = keyName.pathImage
+        keyName.frames = frames
+    },
+
+    // Create ghosts array
+    concatGhosts() {
+        this.allGhostsArr = this.allGhostsArr.concat(this.verticalGhostsArr, this.horizontalGhostsArr);
+    },
+
+
+    // CLEAR
+    
+    clearAll() {
+    this.ctx.clearRect(0, 0, this.canvasSize.w, this.canvasSize.h)
     },
 
     clearObjects() {
@@ -296,10 +341,62 @@ const game = {
         this.key !== undefined && this.player.hasKey ? this.key.clear() : null;
     },
 
-    /* Si queremos que haya colisión de otra forma que no se de abajo a arriba, modificar el 50
-    y poner más números o lo que sea */
+
+    // UPDATE
+
+    updateObjects() {
+        this.map.forEach((number, index) => {
+            if (number === 6 && this.key === undefined) {
+                // Create key
+                this.key = new Key(this.ctx, index, 20, 20);
+            }
+            if (this.checkBrownWallCollision() && this.player.hasKey) {
+                this.updateBrownWall();
+            }
+        });
+        this.clearObjects();
+    }, 
+
+    updateBrownWall() {
+        //number = 1;
+        this.map[662] = 1;
+        this.map[662 + 50] = 1;
+        this.map[662 + 100] = 1;
+    },
+
+
+    // MOVE
+
+    moveAll(currentFrame) {
+        currentFrame % this.ghostTime ? this.verticalGhostsArr.forEach(ghost => ghost.move()) : null
+        currentFrame % this.ghostTime ? this.horizontalGhostsArr.forEach(ghost => ghost.move()) : null;
+        if (this.dog !== undefined) currentFrame === this.dogTime ? this.dog.move() : null;
+    },
+
+
+    // COLLISIONS
+
+    checkAllCollisions() {
+        this.verticalGhostsArr.forEach(ghost => ghost.checkCollision());
+        this.checkPlayerGhostCollisions();
+        this.door.isCollision(this.checkAdjacentCollision(this.door));
+        this.livesArr.forEach(heart => heart.isCollision(this.checkPlayerCollision(heart)));
+        this.key !== undefined && this.key.isCollision(this.checkPlayerCollision(this.key));
+        if (this.dog !== undefined) this.checkAnyCollision(this.dog) && this.hasWon();
+        this.checkBrownWallCollision();
+    },
+
+    // Player in front of object
     checkAdjacentCollision(object) {
         return game.player.i - 50 === object.i;
+    },
+
+    // Player around object
+    checkAnyCollision(object) {
+        return game.player.i - 50 === object.i || game.player.i + 50 === object.i
+               || game.player.i - 1 === object.i || game.player.i + 1 === object.i
+               || game.player.i - 51 === object.i || game.player.i -49 === object.i
+               || game.player.i + 49 === object.i || game.player.i + 51 === object.i
     },
 
     // Direct collision
@@ -307,18 +404,8 @@ const game = {
         return game.player.i === object.i;
     },
 
-    checkAllCollisions() {
-        this.verticalGhostsArr.forEach(ghost => ghost.checkCollision());
-        this.checkPlayerGhostCollisions()
-        this.door.isCollision(this.checkAdjacentCollision(this.door))
-        this.livesArr.forEach(heart => heart.isCollision(this.checkPlayerCollision(heart)));
-        if (this.key !== undefined) {
-            this.key.isCollision(this.checkPlayerCollision(this.key))
-        }
-    },
-
-    concatGhosts() {
-        this.allGhostsArr = this.allGhostsArr.concat(this.verticalGhostsArr, this.horizontalGhostsArr);
+    checkBrownWallCollision() {
+        return this.map[this.player.i + 1] === '!';
     },
 
     checkPlayerGhostCollisions() {
@@ -329,16 +416,43 @@ const game = {
                 this.player.y = this.player.initialPosition.y;
                 this.player.lives--;
                 if (this.player.lives === 0) {
-                    alert('GAME OVER');
-                    this.player.lives = 3;
+                    this.hasLost();
                 }
             }
         });
     },
 
-    // hasWon() {
-    //     if(this.checkAnyCollision(this.dog)){
-    //     }
-    // },
+
+    // WIN-LOSE
+
+    hasWon() {
+        this.finishGame();
+        this.drawYouWin();
+    },
+
+    hasLost() {
+        this.finishGame();
+        this.drawGameOver();
+    },
+
+    finishGame() {
+        clearInterval(this.intervalID);
+        this.clearAll();
+    },
+
+    drawGameOver() {
+        this.setImage(this.gameOverImg, 'sad-pug.jpg', 1);
+        this.gameOverImg.onload = () => {
+            this.ctx.drawImage(this.gameOverImg, 0, 0, this.canvasSize.w, this.canvasSize.h);
+        }
+        //this.ctx.addEventListener
+    },
+
+    drawYouWin() {
+        this.setImage(this.gameOverImg, 'happy-pug.jpg', 1);
+        this.gameOverImg.onload = () => {
+            this.ctx.drawImage(this.gameOverImg, 0, 0, this.canvasSize.w, this.canvasSize.h);
+        }
+    },
 
 }
