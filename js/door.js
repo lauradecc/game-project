@@ -14,7 +14,8 @@ class Door {
     // si queremos que aparezca la llave al tocar la puerta por los lados, también + 50 -50, diagonal?
 
     isCollision(bool) {
-        if (bool) game.player.hasKey === false ? this.showKey() : this.goNextLevel()
+        if (bool) 
+            game.player.hasKey === false ? this.showKey() : this.goNextLevel()
     }
 
     showKey() {

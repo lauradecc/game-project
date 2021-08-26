@@ -8,6 +8,7 @@ const game = {
     timeInterval: 30,
     currentFrame: 0,
     ghostTime: 3,
+    dogTime: 6,
 
     verticalGhostsArr: [],
     horizontalGhostsArr: [],
@@ -16,13 +17,15 @@ const game = {
     floorArr: [],
     
     currentLevel: 1,
-    levels: ['', level1, level2],
+    levels: ['', level1, level2, level3],
+    keyIndex: ['', 102, 110, 115],
 
     wallImg: new Image(),
     floorImg: new Image(),
     heartImg: new Image(),
     keyImg: new Image(),
     doorImg: new Image(),
+    dogImg: new Image(),
 
     map: [],
 
@@ -33,13 +36,13 @@ const game = {
         this.canvasSize = {h: 700, w: 1000};
         this.canvas.setAttribute("width", this.canvasSize.w)
         this.canvas.setAttribute("height", this.canvasSize.h)
-        this.changeLevel(level1)
+        this.changeLevel(this.levels[1], this.keyIndex[1])
         this.setImage(this.floorImg, 'floor.png', 4)
         this.setImage(this.wallImg, 'wall.png', 1)
 
         this.floorImg.onload = () => {
             this.staticRandomFloor()
-            this.createAll(102)
+            // this.createAll(102)
             this.drawGame()
             this.drawPlayer()
             this.concatGhosts()
@@ -48,17 +51,18 @@ const game = {
     },
     
     start() {
-        setInterval(() => {
+        this.intervalID = setInterval(() => {
             this.currentFrame++
             this.clearAll()
             this.updateObjects()
-            this.currentFrame === this.ghostTime ? this.moveAll() : null
-            this.currentFrame %= this.ghostTime;
+            this.moveAll(this.currentFrame)
+            this.currentFrame %= this.dogTime;
             this.checkAllCollisions()
             this.drawGame() 
             this.drawPlayer()
             this.drawBox()
         }, 1000 / this.timeInterval);
+        //clearInterval(this.intervalID)
     },
 
     // Create images
@@ -69,14 +73,14 @@ const game = {
     },
 
     // Cómo hacemos para que argumento level sea levelX ???
-    changeLevel(level) {
+    changeLevel(level, keyIndex) {
         this.verticalGhostsArr = [];
         this.horizontalGhostsArr = [];
         this.allGhostsArr = [];
         this.clearAll();
         this.key = undefined;
         this.map = level.map;
-        this.createAll(110);
+        this.createAll(keyIndex);
         this.concatGhosts();
     },
 
@@ -103,6 +107,12 @@ const game = {
             if (number !== 0) {
                 this.drawFloor(index);
             }
+            if (number === 3) {
+                this.drawVerticalGhosts();
+            }
+            if (number === 4) {
+                this.drawHorizontalGhosts();
+            }
             if (number === 5) {
                 this.drawDoor();
             }
@@ -112,15 +122,8 @@ const game = {
             if (number === 7) {
                 this.drawHearts(this.x + 2.5, this.y + 2.5);
             }
-            // Nos rompe el juego.
-            // if (number === 2) {
-            //     this.player.draw();
-            // }
-            if (number === 3) {
-                this.drawVerticalGhosts();
-            }
-            if (number === 4) {
-                this.drawHorizontalGhosts();
+            if (number === 8) {
+                this.drawDog();
             }
             if (number === 9) {
                 this.drawBoxBackground();
@@ -190,17 +193,22 @@ const game = {
         this.setImage(this.heartImg, 'heart.png', 1);
     },
 
+    drawDog() {
+        this.dog.draw(this.currentFrame);
+    },
+
     drawBox() {
         this.drawText();
         this.drawLives();
-        this.player.hasKey ? this.drawKey(670, 631) : null;
+        this.player.hasKey ? this.drawKey(610, 631) : null;
     },
 
     drawText() {
         this.ctx.font = '20px "Press Start 2P"';
         this.ctx.fillStyle = 'black';
         this.ctx.fillText('Lives:', 70, 650);
-        this.ctx.fillText('Objects:', 500, 650);
+        this.ctx.fillText('Objects:', 440, 650);
+        this.ctx.fillText(`level ${this.currentLevel}`,700, 650 )
     },
 
     drawLives() {
@@ -232,6 +240,9 @@ const game = {
             if (number === 7) {
                 this.createHearts(index);
             }
+            if (number === 8) {
+                this.createDog(index);
+            }
         });
     },
 
@@ -257,6 +268,10 @@ const game = {
         this.livesArr.push(new Heart(this.ctx, index, 20, 20));
     },
 
+    createDog(index) {
+        this.dog = new Dog(this.ctx, index, 'pugs.png');
+    },
+
     updateObjects() {
         this.map.forEach((number, index) => {
             if (number === 6 && this.key === undefined) {
@@ -270,9 +285,10 @@ const game = {
         this.clearObjects();
     }, 
 
-    moveAll() {
-        this.verticalGhostsArr.forEach(ghost => ghost.move());
-        this.horizontalGhostsArr.forEach(ghost => ghost.move());
+    moveAll(currentFrame) {
+        currentFrame % this.ghostTime ? this.verticalGhostsArr.forEach(ghost => ghost.move()) : null
+        currentFrame % this.ghostTime ? this.horizontalGhostsArr.forEach(ghost => ghost.move()) : null;
+        if (this.dog !== undefined) currentFrame === this.dogTime ? this.dog.move() : null;
     },
 
     clearObjects() {
@@ -318,6 +334,11 @@ const game = {
                 }
             }
         });
-    }
+    },
+
+    // hasWon() {
+    //     if(this.checkAnyCollision(this.dog)){
+    //     }
+    // },
 
 }
