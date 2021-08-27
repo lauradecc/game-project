@@ -41,8 +41,8 @@ h1 {
 }
 
 #story-box {
-    height: 250px;
-    width: 480px;
+    height: 370px;
+    width: 550px;
     border: 20px solid #585147;
     background-color: white;
     text-align: center;
@@ -52,16 +52,17 @@ h1 {
 }
 
 #story-box p {
-    margin-top: 40px;
+    padding: 20px 50px 0 50px;
     line-height: 1.5;
 }
 
 #story-box button {
-    margin-top: 20px;
+    margin: 20px 0;
     padding: 15px 25px;
 }
 
 .button {
+    font-size: 15px;
     background-color: #C56B6F;
     border-radius: 15px;
     border: none;
@@ -70,4 +71,8 @@ h1 {
 canvas {
     position: absolute;
     display: none;
+}
+
+.arrow {
+    width: 150px;
 }

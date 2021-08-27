@@ -20,8 +20,7 @@ class Door {
     }
 
     goNextLevel() {
-        // 3 is the last level
-        if (game.currentLevel !== 3) {
+        if (game.currentLevel !== game.lastLevel) {
             game.currentLevel++;
             game.changeLevel(game.levels[game.currentLevel], game.keyIndex[game.currentLevel]);
         }

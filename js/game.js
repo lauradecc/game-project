@@ -17,8 +17,9 @@ const game = {
     floorArr: [],
     
     currentLevel: 1,
+    lastLevel: 3,
     levels: ['', level1, level2, level3],
-    keyIndex: ['', 102, 110, 115],
+    keyIndex: ['', 102, 108, 115],
 
     wallImg: new Image(),
     floorImg: new Image(),
@@ -319,7 +320,7 @@ const game = {
 
     // Create images
     setImage(keyName, imageName, frames) {
-        keyName.pathImage = `img/${imageName}`
+        keyName.pathImage = `./img/${imageName}`
         keyName.src = keyName.pathImage
         keyName.frames = frames
     },
