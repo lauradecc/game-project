@@ -70,6 +70,8 @@ const game = {
         
     },
 
+    // NEXT LEVEL INIT
+
     changeLevel(level, keyIndex) {
         this.verticalGhostsArr = [];
         this.horizontalGhostsArr = [];
@@ -110,47 +112,6 @@ const game = {
             
             number === 9 && this.drawBoxBackground();
 
-            /*
-            if (number === 0) {
-                this.drawWall();
-            } 
-
-            if (number !== 0) {
-                this.drawFloor(index);
-            }
-
-            if (number === '!') {
-                this.drawBrownWall();
-            } 
-
-            if (number === 3) {
-                this.drawVerticalGhosts();
-            }
-
-            if (number === 4) {
-                this.drawHorizontalGhosts();
-            }
-
-            if (number === 5) {
-                this.drawDoor();
-            }
-
-            if (number === 6) {
-                this.drawKey(this.x, this.y);
-            }
-
-            if (number === 7) {
-                this.drawHearts(this.x + 2.5, this.y + 2.5);
-            }
-
-            if (number === 8) {
-                this.drawDog();
-            }
-            
-            if (number === 9) {
-                this.drawBoxBackground();
-            } 
-            */
         });
     },
 
@@ -259,26 +220,6 @@ const game = {
 
             number === 8 && this.createDog(index);
 
-            /*
-            if (number === 2) {
-                this.createPlayer(index);
-            }
-            if (number === 3) {
-                this.createVerticalGhosts(index);
-            }
-            if (number === 4) {
-                this.createHorizontalGhosts(index);
-            }
-            if (number === 5) {
-                this.createDoor(index, keyIndex);
-            }
-            if (number === 7) {
-                this.createHearts(index);
-            }
-            if (number === 8) {
-                this.createDog(index);
-            }
-            */
         });
     },
 
@@ -338,6 +279,7 @@ const game = {
     this.ctx.clearRect(0, 0, this.canvasSize.w, this.canvasSize.h)
     },
 
+    // When player touches key or heart, they disappear
     clearObjects() {
         this.livesArr = this.livesArr.filter(heart => heart.toDelete === false)
         this.key !== undefined && this.player.hasKey ? this.key.clear() : null;

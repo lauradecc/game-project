@@ -29,7 +29,6 @@ class Ghost {
             this.image,
             frameIndex.x,
             frameIndex.y,
-            //this.frames para sustituir al número que hemos puesto a lo bruto??
             Math.floor(this.image.width / this.frames),
             Math.floor(this.image.height / 4),
             this.x - game.squareSize / 2,

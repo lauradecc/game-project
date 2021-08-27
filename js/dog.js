@@ -79,7 +79,7 @@ class Dog {
         this.updateDirection(this.speed);
         if (this.willBeCollision(desiredPositionIndex)) this.speed *= -1;
         this.walk();
-        // 8 is dog number
+        // 8 is dog number in map array
         this.updatePosition(8);
     }
 

@@ -10,12 +10,9 @@ class Heart {
     }
 
     isCollision(bool) {
-        if (bool) {
-            this.addOneLife();
-        }
+        if (bool) this.addOneLife();
     }
 
-    // When player touches heart, heart disappears
     addOneLife() {
         game.player.lives++;
         game.map[this.i] = 1;
