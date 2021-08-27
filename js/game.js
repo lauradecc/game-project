@@ -28,6 +28,7 @@ const game = {
     doorImg: new Image(),
     dogImg: new Image(),
     gameOverImg: new Image(),
+    winImg: new Image(),
     brownWallImg: new Image(),
 
     map: [],
@@ -320,7 +321,7 @@ const game = {
 
     // Create images
     setImage(keyName, imageName, frames) {
-        keyName.pathImage = `./img/${imageName}`
+        keyName.pathImage = `img/${imageName}`
         keyName.src = keyName.pathImage
         keyName.frames = frames
     },
@@ -450,9 +451,9 @@ const game = {
     },
 
     drawYouWin() {
-        this.setImage(this.gameOverImg, 'happy-pug.jpg', 1);
-        this.gameOverImg.onload = () => {
-            this.ctx.drawImage(this.gameOverImg, 0, 0, this.canvasSize.w, this.canvasSize.h);
+        this.setImage(this.winImg, 'happy-pug.jpg', 1);
+        this.winImg.onload = () => {
+            this.ctx.drawImage(this.winImg, 0, 0, this.canvasSize.w, this.canvasSize.h);
         }
     },
 
