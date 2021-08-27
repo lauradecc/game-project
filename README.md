@@ -1,6 +1,6 @@
 # Free The Pug
 
-### Game: https://lauradecc.github.io/game_project/
+#### Game demo: https://lauradecc.github.io/game_project/
 
 ### Description
 
@@ -18,8 +18,12 @@
 
 ### Technology
 
-The game has been created with the HTML canvas element, used to draw graphics on a web page, and Javescript to draw the graphics.
- 
+The game has been created with the HTML canvas API, used to draw graphics on a web page, and Javascript to draw the graphics. 
+
+### Additional info
+
+This game is the first project developed by Sergio Puente and Laura de Cos at the Ironhack's Web Development Bootcamp and it has been created in a week.
+
 
 <img src="img/pixel-pugs.png" alt="pixel pugs running"/>
 

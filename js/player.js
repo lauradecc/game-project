@@ -73,7 +73,8 @@ class Player {
     willBeCollision(desiredPositionIndex) {
         return !(game.map[desiredPositionIndex] === 1 
                 || game.map[desiredPositionIndex] === 6
-                || game.map[desiredPositionIndex] === 7);
+                || game.map[desiredPositionIndex] === 7
+                || game.map[desiredPositionIndex] === 10);
     }
 
     updatePosition(desiredPositionIndex) {

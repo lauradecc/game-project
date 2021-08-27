@@ -19,7 +19,7 @@ const game = {
     currentLevel: 1,
     lastLevel: 3,
     levels: ['', level1, level2, level3],
-    keyIndex: ['', 102, 108, 115],
+    keyIndex: ['', 438, 535, 1389],
 
     wallImg: new Image(),
     floorImg: new Image(),
@@ -36,7 +36,6 @@ const game = {
     init(id) {
         this.canvas = document.getElementById(id);
         this.ctx = this.canvas.getContext('2d');
-        //// Medidias fijas o en función de la pantalla?
         this.canvasSize = {h: 700, w: 1000};
         this.canvas.setAttribute("width", this.canvasSize.w)
         this.canvas.setAttribute("height", this.canvasSize.h)
@@ -47,7 +46,6 @@ const game = {
 
         this.floorImg.onload = () => {
             this.staticRandomFloor()
-            // this.createAll(102)
             this.drawGame()
             this.drawPlayer()
             this.concatGhosts()
@@ -93,8 +91,10 @@ const game = {
             this.y = Math.floor(index / 50) * 20; 
 
             number === 0 && this.drawWall();
-
+            
             number !== 0 && this.drawFloor(index);
+            
+            number === 10 && this.drawWall();
 
             number === '!' && this.drawBrownWall();
 
@@ -302,10 +302,11 @@ const game = {
     }, 
 
     updateBrownWall() {
-        //number = 1;
-        this.map[662] = 1;
-        this.map[662 + 50] = 1;
-        this.map[662 + 100] = 1;
+        let brownWallIndex = this.map.indexOf("!");
+        for (let i = 0; i < 3; i++) {
+            this.map[brownWallIndex] = 1;
+            brownWallIndex += 50;
+        }
     },
 
 
@@ -376,7 +377,7 @@ const game = {
 
     hasLost() {
         this.finishGame();
-        this.drawGameOver();
+        this.drawGameOver();        
     },
 
     finishGame() {
@@ -389,7 +390,6 @@ const game = {
         this.gameOverImg.onload = () => {
             this.ctx.drawImage(this.gameOverImg, 0, 0, this.canvasSize.w, this.canvasSize.h);
         }
-        //this.ctx.addEventListener
     },
 
     drawYouWin() {
