@@ -16,13 +16,13 @@
 6. If the player loses all the lives, you lose.
 7. Rescue the pug to win the game.
 
-### Technology
+### Technologies
 
 The game has been created with the HTML canvas API, used to draw graphics on a web page, and Javascript to draw the graphics. 
 
 ### Additional info
 
-This game is the first project developed by Sergio Puente and Laura de Cos at the Ironhack's Web Development Bootcamp and it has been created in a week.
+This is the first project developed by Sergio Puente and Laura de Cos at the Ironhack's Web Development Bootcamp and it has been created in a week.
 
 
 <img src="img/pixel-pugs.png" alt="pixel pugs running"/>
