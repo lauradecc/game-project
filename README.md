@@ -22,7 +22,7 @@ The game has been created with the HTML canvas API, used to draw graphics on a w
 
 ### Additional info
 
-This is the first project developed by Sergio Puente and Laura de Cos at the Ironhack's Web Development Bootcamp and it has been created in a week.
+This is the first project developed by Sergio Puente and Laura de Cos at the Ironhack's Web Development Bootcamp and it has been created in five days.
 
 
 <img src="img/pixel-pugs.png" alt="pixel pugs running"/>
