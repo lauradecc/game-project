@@ -4,7 +4,7 @@
 
 ### Description
 
-**Free The Pug** is a laberinth videogame in which the player has to move the main character in order to rescue the pug from the enemies, who will take a live from the player if they touch him. 
+**Free The Pug** is a tile-based videogame in which the player has to move the main character through a laberinth in order to rescue the pug from the enemies, who will take a live from the player if they touch him. 
 
 ### Usage
 
