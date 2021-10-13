@@ -1,6 +1,6 @@
 # Free The Pug
 
-#### Game demo: https://lauradecc.github.io/game_project/
+#### Game demo: https://lauradecc.github.io/game-project/
 
 ### Description
 
